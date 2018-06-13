@@ -106,7 +106,7 @@ public class BackEndService {
             statement = conn.createStatement();
             statement.executeUpdate("CREATE DATABASE IF NOT EXISTS DummyTable;");
             String tableMessage = createTableIfItDoesNotExists();
-            return "Created the Database - " + tableMessage;
+            return "This has changed to a new message";
         }
         catch (Exception exception){
             System.out.println("There was an error creating the database");
