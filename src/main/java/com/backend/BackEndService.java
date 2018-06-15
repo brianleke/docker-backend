@@ -1,5 +1,7 @@
 package com.backend;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import spark.Filter;
 import spark.Request;
 import spark.Response;
@@ -16,6 +18,7 @@ import static com.backend.JsonUtil.json;
 
 public class BackEndService {
 
+    @Contract(pure = true)
     private static String[] getDBDetails() {
         try {
             String[] dbDetails = new String[4];
@@ -34,16 +37,14 @@ public class BackEndService {
 
     private static ArrayList<TeamInfo> getAllTeamNames(){
 
-        Connection conn = null;
-        Statement stmt = null;
         ArrayList<TeamInfo> teamInfos = new ArrayList<TeamInfo>();
 
         String[] dbDetails = getDBDetails();
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(dbDetails[3], dbDetails[1], dbDetails[2]);
-            stmt = conn.createStatement();
+            Connection databaseConnection = DriverManager.getConnection(dbDetails[3], dbDetails[1], dbDetails[2]);
+            Statement stmt = databaseConnection.createStatement();
 
             String queryStatement = "SELECT * from DummyTableResults";
             ResultSet resultSet = stmt.executeQuery(queryStatement);
@@ -65,6 +66,7 @@ public class BackEndService {
 
     }
 
+    @NotNull
     private static String insertTeamName(String teamName, String rawData){
 
         createDatabaseIfItDoesNotExists();
@@ -96,8 +98,8 @@ public class BackEndService {
 
 
     private static String createDatabaseIfItDoesNotExists(){
-        Connection conn = null;
-        Statement statement = null;
+        Connection conn;
+        Statement statement;
         String[] dbDetails = getDBDetails();
 
         try {
@@ -105,7 +107,7 @@ public class BackEndService {
             conn = DriverManager.getConnection(dbDetails[0], dbDetails[1], dbDetails[2]);
             statement = conn.createStatement();
             statement.executeUpdate("CREATE DATABASE IF NOT EXISTS DummyTable;");
-            String tableMessage = createTableIfItDoesNotExists();
+            createTableIfItDoesNotExists();
             return "This has changed to a new message";
         }
         catch (Exception exception){
