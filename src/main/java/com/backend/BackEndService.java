@@ -39,7 +39,7 @@ public class BackEndService {
 
     private static ArrayList<TeamInfo> getAllTeamNames(){
 
-        ArrayList<TeamInfo> teamInfos = new ArrayList<TeamInfo>();
+        ArrayList<TeamInfo> teamInfos = new ArrayList<>();
 
         String[] dbDetails = getDBDetails();
         String queryStatement = "SELECT * from DummyTableResults";
