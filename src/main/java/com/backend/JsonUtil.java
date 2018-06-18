@@ -5,6 +5,10 @@ import spark.ResponseTransformer;
 
 public class JsonUtil {
 
+    private JsonUtil(){
+        throw new IllegalStateException("JSon Utility class");
+    }
+
     public static String toJson(Object object) {
         return new Gson().toJson(object);
     }
