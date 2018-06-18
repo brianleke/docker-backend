@@ -1,4 +1,4 @@
-package java.com.backend;
+package com.backend;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

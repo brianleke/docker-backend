@@ -1,4 +1,4 @@
-package java.com.backend;
+package com.backend;
 
 public class TeamInfo {
     private String teamName;
