@@ -1,4 +1,4 @@
-package com.backend;
+package java.com.backend;
 
 public class TeamInfo {
     private String teamName, rawData;

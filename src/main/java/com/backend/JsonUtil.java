@@ -1,4 +1,4 @@
-package com.backend;
+package java.com.backend;
 
 import com.google.gson.Gson;
 import spark.ResponseTransformer;

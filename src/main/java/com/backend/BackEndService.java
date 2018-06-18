@@ -1,4 +1,4 @@
-package com.backend;
+package java.com.backend;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -14,9 +14,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import static spark.Spark.*;
-import static com.backend.JsonUtil.json;
+import static java.com.backend.JsonUtil.json;
 
 public class BackEndService {
+
+    private static final JDBC_DRIVER = "com.mysql.jdbc.Driver";
 
     @Contract(pure = true)
     private static String[] getDBDetails() {
@@ -42,7 +44,7 @@ public class BackEndService {
         String[] dbDetails = getDBDetails();
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(JDBC_DRIVER);
             Connection databaseConnection = DriverManager.getConnection(dbDetails[3], dbDetails[1], dbDetails[2]);
             Statement stmt = databaseConnection.createStatement();
 
@@ -75,7 +77,7 @@ public class BackEndService {
         String[] dbDetails = getDBDetails();
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(dbDetails[3], dbDetails[1], dbDetails[2]);
             stmt = conn.createStatement();
 
@@ -103,7 +105,7 @@ public class BackEndService {
         String[] dbDetails = getDBDetails();
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(dbDetails[0], dbDetails[1], dbDetails[2]);
             statement = conn.createStatement();
             statement.executeUpdate("CREATE DATABASE IF NOT EXISTS DummyTable;");
@@ -122,7 +124,7 @@ public class BackEndService {
         String[] dbDetails = getDBDetails();
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(dbDetails[3], dbDetails[1], dbDetails[2]);
             statement = conn.createStatement();
             String sqlCreate = "CREATE TABLE IF NOT EXISTS DummyTableResults"
