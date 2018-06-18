@@ -18,7 +18,7 @@ import static java.com.backend.JsonUtil.json;
 
 public class BackEndService {
 
-    private static final JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 
     @Contract(pure = true)
     private static String[] getDBDetails() {
@@ -42,14 +42,14 @@ public class BackEndService {
         ArrayList<TeamInfo> teamInfos = new ArrayList<TeamInfo>();
 
         String[] dbDetails = getDBDetails();
+        String queryStatement = "SELECT * from DummyTableResults";
 
-        try {
+        try (Connection databaseConnection = DriverManager.getConnection(dbDetails[3], dbDetails[1], dbDetails[2]);
+             Statement stmt = databaseConnection.createStatement();
+             ResultSet resultSet = stmt.executeQuery(queryStatement);
+             )
+        {
             Class.forName(JDBC_DRIVER);
-            Connection databaseConnection = DriverManager.getConnection(dbDetails[3], dbDetails[1], dbDetails[2]);
-            Statement stmt = databaseConnection.createStatement();
-
-            String queryStatement = "SELECT * from DummyTableResults";
-            ResultSet resultSet = stmt.executeQuery(queryStatement);
 
             while (resultSet.next()) {
                 String teamName = resultSet.getString("teamName");
@@ -72,14 +72,13 @@ public class BackEndService {
     private static String insertTeamName(String teamName, String rawData){
 
         createDatabaseIfItDoesNotExists();
-        Connection conn = null;
-        Statement stmt = null;
         String[] dbDetails = getDBDetails();
 
-        try {
+        try (Connection conn = DriverManager.getConnection(dbDetails[3], dbDetails[1], dbDetails[2]);
+             Statement stmt = conn.createStatement();
+             ) {
             Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(dbDetails[3], dbDetails[1], dbDetails[2]);
-            stmt = conn.createStatement();
+
 
             String sql = String.format("REPLACE INTO DummyTableResults VALUES ('%s','%s')", teamName, rawData);
 
@@ -100,14 +99,13 @@ public class BackEndService {
 
 
     private static String createDatabaseIfItDoesNotExists(){
-        Connection conn;
-        Statement statement;
         String[] dbDetails = getDBDetails();
 
-        try {
+        try (Connection conn = DriverManager.getConnection(dbDetails[0], dbDetails[1], dbDetails[2]);
+             Statement statement = conn.createStatement();
+             ) {
             Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(dbDetails[0], dbDetails[1], dbDetails[2]);
-            statement = conn.createStatement();
+
             statement.executeUpdate("CREATE DATABASE IF NOT EXISTS DummyTable;");
             createTableIfItDoesNotExists();
             return "This has changed to a new message";
@@ -119,14 +117,12 @@ public class BackEndService {
     }
 
     private static String createTableIfItDoesNotExists(){
-        Connection conn = null;
-        Statement statement = null;
         String[] dbDetails = getDBDetails();
 
-        try {
+        try (Connection conn = DriverManager.getConnection(dbDetails[3], dbDetails[1], dbDetails[2]);
+             Statement statement = conn.createStatement();
+        ) {
             Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(dbDetails[3], dbDetails[1], dbDetails[2]);
-            statement = conn.createStatement();
             String sqlCreate = "CREATE TABLE IF NOT EXISTS DummyTableResults"
                     + "  (teamName           VARCHAR(150),"
                     + "   rawdata            longtext,"
