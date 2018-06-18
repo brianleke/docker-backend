@@ -108,10 +108,9 @@ public class BackEndService {
 
             statement.executeUpdate("CREATE DATABASE IF NOT EXISTS DummyTable;");
             createTableIfItDoesNotExists();
-            return "This has changed to a new message";
+            return "The table and database have been successfully created.";
         }
         catch (Exception exception){
-            System.out.println("There was an error creating the database");
             return exception.getMessage();
         }
     }
@@ -132,7 +131,6 @@ public class BackEndService {
             return "Created the table";
         }
         catch (Exception exception){
-            System.out.println("There was an error creating the table");
             return exception.getMessage();
         }
     }
